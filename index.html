@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>會計師潛能測驗｜</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background: linear-gradient(145deg, #eef2f5 0%, #d9e2e8 100%);
+            font-family: 'Inter', 'Lexend', sans-serif;
+            padding: 1rem 0.8rem 2rem;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        /* 動態幸運草背景 */
+        .lucky-grass {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .clover {
+            position: absolute;
+            color: rgba(70, 110, 90, 0.25);
+            font-size: 2rem;
+            animation: floatClover 8s infinite ease-in-out;
+        }
+        @keyframes floatClover {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.2; }
+            50% { transform: translateY(-20px) rotate(8deg); opacity: 0.5; }
+            100% { transform: translateY(0px) rotate(0deg); opacity: 0.2; }
+        }
+        .clover:nth-child(1) { left: 5%; top: 10%; font-size: 2.2rem; animation-duration: 12s; }
+        .clover:nth-child(2) { left: 85%; top: 20%; font-size: 1.8rem; animation-duration: 10s; animation-delay: -2s; }
+        .clover:nth-child(3) { left: 15%; top: 60%; font-size: 2.5rem; animation-duration: 14s; animation-delay: -4s; }
+        .clover:nth-child(4) { left: 70%; top: 75%; font-size: 1.9rem; animation-duration: 9s; animation-delay: -1s; }
+        .clover:nth-child(5) { left: 45%; top: 40%; font-size: 2rem; animation-duration: 11s; animation-delay: -3s; }
+        .clover:nth-child(6) { left: 90%; top: 85%; font-size: 1.6rem; animation-duration: 13s; }
+        .clover:nth-child(7) { left: 3%; top: 85%; font-size: 2.1rem; animation-duration: 10s; animation-delay: -5s; }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(100, 130, 110, 0.3);
+        }
+        .header {
+            background: #2c5e4a;
+            padding: 1.2rem 1.5rem;
+            color: white;
+            background-image: radial-gradient(circle at 10% 30%, rgba(200, 230, 180, 0.2) 2%, transparent 2.5%);
+            background-size: 24px 24px;
+        }
+        .header h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .header h1 i { font-size: 1.7rem; color: #d4f0c0; }
+        .sub {
+            font-size: 0.8rem;
+            opacity: 0.85;
+            margin-top: 8px;
+            border-left: 3px solid #b8dc8c;
+            padding-left: 0.8rem;
+        }
+        .login-area {
+            background: #fefce6;
+            border-radius: 1.8rem;
+            padding: 1rem 1.2rem;
+            margin: 1.2rem 1.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 12px;
+            border: 1px solid #cce0b8;
+        }
+        .input-group {
+            flex: 2;
+            min-width: 170px;
+        }
+        .input-group label {
+            font-weight: 600;
+            color: #2c5e4a;
+            font-size: 0.75rem;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 40px;
+            border: 1px solid #c2dab0;
+            background: white;
+            font-size: 0.9rem;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #3e7b52;
+            box-shadow: 0 0 0 2px rgba(62,123,82,0.2);
+        }
+        .warning-tip {
+            background: #fff3db;
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 0.65rem;
+            color: #7a6300;
+        }
+        .questions-section {
+            padding: 0 1rem 0.5rem 1rem;
+        }
+        .question-item {
+            background: #ffffffdd;
+            border-radius: 1.5rem;
+            margin-bottom: 0.9rem;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e2f0d4;
+        }
+        .q-text {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #1e3d2f;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 8px;
+            align-items: baseline;
+        }
+        .q-num {
+            background: #d9e8cf;
+            border-radius: 40px;
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+        .scale {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 0.8rem;
+            align-items: center;
+        }
+        .scale-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #f9fff5;
+            padding: 3px 10px;
+            border-radius: 40px;
+            border: 1px solid #cde0bc;
+        }
+        .scale-option input {
+            accent-color: #3b7b53;
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            cursor: pointer;
+        }
+        .scale-option label {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .button-group {
+            padding: 0.6rem 1.2rem 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+        .btn {
+            border: none;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            background: #2c5e4a;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(44, 94, 74, 0.3);
+        }
+        .teacher-panel { display: none; }
+        .teacher-panel.visible-panel { display: block; }
+        .teacher-card {
+            background: #edf5e6;
+            border-radius: 2rem;
+            border: 1px solid #bdd6a8;
+            overflow: hidden;
+        }
+        .panel-header {
+            background: #ddecd0;
+            padding: 0.9rem 1.2rem;
+            font-weight: 700;
+            color: #2a573c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .panel-content { padding: 1rem; }
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .submission-list {
+            max-height: 260px;
+            overflow-y: auto;
+            background: #ffffffc9;
+            border-radius: 1.2rem;
+            padding: 0.5rem;
+            font-size: 0.7rem;
+        }
+        .submission-item {
+            border-bottom: 1px solid #cde0bc;
+            padding: 6px 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        hr { margin: 0.8rem 0; border-color: #cde0bc; }
+        .teacher-entrance {
+            text-align: center;
+            margin-top: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .teacher-entrance button {
+            background: #ffffffc9;
+            border: 1px solid #b1cf96;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            color: #457a5a;
+            font-weight: 500;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(30, 40, 20, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.2s ease;
+        }
+        .modal-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-container {
+            background: #fffef2;
+            border-radius: 2rem;
+            max-width: 85%;
+            width: 300px;
+            padding: 1.5rem 1.2rem;
+            text-align: center;
+            box-shadow: 0 25px 35px rgba(0,0,0,0.2);
+            border: 1px solid #d9e8c5;
+            animation: pop 0.3s ease;
+        }
+        @keyframes pop {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .flower-icon {
+            font-size: 3.5rem;
+            color: #e08f4a;
+            margin-bottom: 10px;
+            animation: floatFlower 0.6s infinite alternate;
+        }
+        @keyframes floatFlower {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-6px) rotate(6deg); }
+        }
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c5e4a;
+            margin-bottom: 8px;
+        }
+        .score-detail {
+            background: #eef3e8;
+            border-radius: 1rem;
+            padding: 0.5rem;
+            margin: 12px 0;
+            font-size: 0.85rem;
+        }
+        .closing-btn {
+            background: #2c5e4a;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.65rem;
+            color: #55806a;
+            margin-top: 1rem;
+        }
+        @media (max-width: 480px) {
+            .btn { width: 100%; }
+            .scale-option { padding: 2px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="lucky-grass">
+    <i class="fas fa-leaf clover"></i>
+    <i class="fas fa-seedling clover"></i>
+    <i class="fas fa-leaf clover"></i>
+    <i class="fas fa-seedling clover"></i>
+    <i class="fas fa-leaf clover"></i>
+    <i class="fas fa-seedling clover"></i>
+    <i class="fas fa-leaf clover"></i>
+</div>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1><i class="fas fa-calculator"></i> 會計師潛能測驗 <i class="fas fa-leaf" style="color:#c8e6a5;"></i></h1>
+            <div class="sub">🧾 誠信·精確·責任·分析 | 發掘你的會計師特質</div>
+        </div>
+        <div class="login-area">
+            <div class="input-group">
+                <label><i class="fas fa-id-card"></i> 學號登入 (必填)</label>
+                <input type="text" id="studentId" placeholder="例: ACC2024001" autocomplete="off">
+            </div>
+            <div class="warning-tip"><i class="fas fa-info-circle"></i> 請填寫學號，否則無法提交</div>
+        </div>
+        <div class="questions-section" id="questionsContainer"></div>
+        <div class="button-group">
+            <button class="btn btn-primary" id="submitBtn"><i class="fas fa-check-circle"></i> 提交測驗 & 送秘密禮物</button>
+        </div>
+    </div>
+
+    <div class="teacher-entrance">
+        <button id="teacherPortalBtn"><i class="fas fa-lock"></i> 教師專區 · 答案收集系統</button>
+    </div>
+    <div id="teacherPanel" class="teacher-panel">
+        <div class="teacher-card">
+            <div class="panel-header">
+                <span><i class="fas fa-chalkboard-teacher"></i> 📊 教師答案收集系統</span>
+                <span id="submissionCountDisplay">累積提交: 0 筆</span>
+            </div>
+            <div class="panel-content">
+                <div class="export-buttons">
+                    <button class="btn" id="exportCsvBtn" style="background:#2c5e4a; color:white;"><i class="fas fa-download"></i> 匯出CSV</button>
+                    <button class="btn" id="clearAllDataBtn" style="background:#fff0e0; color:#a55d2a;"><i class="fas fa-trash-alt"></i> 清空記錄</button>
+                </div>
+                <div style="font-size:0.75rem; margin-bottom:6px;"><i class="fas fa-database"></i> 學員測驗紀錄（含各維度分數）</div>
+                <div id="submissionList" class="submission-list">
+                    <div style="color: #769e6b; text-align: center; padding: 12px;">無提交紀錄</div>
+                </div>
+                <hr>
+                <div style="font-size:0.65rem; color:#4b6b3b;"><i class="fas fa-lightbulb"></i> 資料儲存於此裝置，教師可匯出Excel進行甄選分析。</div>
+            </div>
+        </div>
+    </div>
+    <footer>🍀 直接點選作答，提交後獲得個人分析+秘密祝福 |</footer>
+</div>
+
+<div id="resultModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="flower-icon"><i class="fas fa-seedling"></i><i class="fas fa-calculator"></i>🌸</div>
+        <div class="modal-title">會計師潛能報告</div>
+        <div id="modalScoreContent" style="font-size:0.9rem; margin:8px 0;"></div>
+        <div id="flowerMessage" style="color:#c4511b; font-weight:500;">🎁 送你一朵花，感謝參與測驗！</div>
+        <button class="closing-btn" id="closeModalBtn">收下祝福 ✨</button>
+    </div>
+</div>
+
+<script>
+    // 會計師潛能測驗 20題 (五大維度: 誠信正直, 細心精確, 責任堅持, 分析邏輯, 情緒穩定)
+    const QUESTIONS = [
+        { text: "即使沒有人監督，我也會主動遵守法規與公司政策。", dim: "integrity" },
+        { text: "我能專注處理大量數字資料，很少發生錯誤。", dim: "precision" },
+        { text: "遇到複雜的帳務問題，我會冷靜拆解邏輯、逐步解決。", dim: "analytical" },
+        { text: "我會為了如期完成報表而加班，不輕易放棄。", dim: "responsibility" },
+        { text: "我經常反覆檢查自己的計算與記錄，確保完全正確。", dim: "precision" },
+        { text: "我認為誠實申報比短暫利益更重要。", dim: "integrity" },
+        { text: "我擅長從雜亂數據中找出異常或不合邏輯之處。", dim: "analytical" },
+        { text: "即使面對壓力，我仍能保持情緒平穩、不影響判斷。", dim: "emotional" },
+        { text: "我樂於承擔責任，不會推卸過錯。", dim: "responsibility" },
+        { text: "我習慣用系統化方法整理工作，減少遺漏。", dim: "precision" },
+        { text: "我願意花時間確認每一筆金額的來源與憑證。", dim: "integrity" },
+        { text: "我能迅速理解會計準則的邏輯並應用於實務。", dim: "analytical" },
+        { text: "面對審計或稅務查核，我能保持冷靜與專業。", dim: "emotional" },
+        { text: "我會主動追蹤未完成的任務直到結案。", dim: "responsibility" },
+        { text: "我對小數點或單位換算特別敏感，不易出錯。", dim: "precision" },
+        { text: "即使無人察覺，我也不會作假帳或隱瞞錯誤。", dim: "integrity" },
+        { text: "我善於使用Excel或會計軟體進行資料比對與分析。", dim: "analytical" },
+        { text: "我能承受月底結帳的高壓，不輕易離職或崩潰。", dim: "emotional" },
+        { text: "我對自己的工作要求很高，會反覆校驗。", dim: "precision" },
+        { text: "我認為會計師必須對客戶、公眾及法律負責。", dim: "integrity" }
+    ];
+
+    // 維度映射 (每題對應dim)
+    // 整合計分：integrity (誠信) 5題, precision (精確) 5題, responsibility (責任) 4題, analytical (分析) 4題, emotional (情緒穩定) 2題? 調整整體比例:
+    // 重新分配: integrity: 1,6,11,16,20 (5題) ; precision: 2,5,10,15,19 (5題); responsibility:4,9,14 (3題) 但最好平衡，增加一題責任: 調整第4,9,14, 再加? 原本第4,9,14 三題，可再將某題改為責任? 原第3是分析，保持。 總共20題，確保維度合理。
+    // 實際維度計分:
+    // integrity: 題1,6,11,16,20  (5題)
+    // precision: 題2,5,10,15,19 (5題)
+    // responsibility: 題4,9,14 (3題) 再加? 題18? 情緒需保留，但責任感對會計重要，將題8? 題8是情緒。 最好再補一個責任: 以題18為責任? 原本題18是情緒，但情緒已有2題(8,13,18? 重新確認) 為了維度均衡，將題18改成責任: "我能長期維持高品質工作，不因疲憊而馬虎" 但題目已固定，為了程式一致，以當前QUESTIONS為準，另加計算映射。
+    // 重新手動定義每題維度索引:
+    // 0: integrity, 1:precision, 2:analytical, 3:responsibility, 4:precision, 5:integrity, 6:analytical, 7:emotional, 8:responsibility, 9:precision, 10:integrity, 11:analytical, 12:emotional, 13:responsibility, 14:precision, 15:integrity, 16:analytical, 17:emotional, 18:precision, 19:integrity
+    // 這樣 integrity: 0,5,10,15,19 (5題) ; precision:1,4,9,14,18 (5題) ; responsibility:3,8,13 (3題) 略少，但無傷大雅；analytical:2,6,11,16 (4題) ; emotional:7,12,17 (3題) 。總分各維度滿分不同，但甄選可看總分與傾向。
+    // 為了讓責任感更突出，保留原設計，分析時可說明。
+    
+    // 定義各維度題索引 (0-based)
+    const INTEGRITY_IDX = [0,5,10,15,19];
+    const PRECISION_IDX = [1,4,9,14,18];
+    const RESPONSIBILITY_IDX = [3,8,13];
+    const ANALYTICAL_IDX = [2,6,11,16];
+    const EMOTIONAL_IDX = [7,12,17];
+    
+    let allSubmissions = [];
+
+    function loadSubmissions() {
+        const stored = localStorage.getItem("accountant_sales_submissions");
+        if(stored) {
+            try{ allSubmissions = JSON.parse(stored); if(!Array.isArray(allSubmissions)) allSubmissions = []; } catch(e){ allSubmissions = []; }
+        } else { allSubmissions = []; }
+        updateTeacherUI();
+    }
+    function saveSubmissions() {
+        localStorage.setItem("accountant_sales_submissions", JSON.stringify(allSubmissions));
+        updateTeacherUI();
+    }
+    function updateTeacherUI() {
+        const countSpan = document.getElementById("submissionCountDisplay");
+        if(countSpan) countSpan.innerText = `累積提交: ${allSubmissions.length} 筆`;
+        const listContainer = document.getElementById("submissionList");
+        if(listContainer) {
+            if(allSubmissions.length === 0) {
+                listContainer.innerHTML = `<div style="color: #769e6b; text-align: center; padding: 12px;">📭 尚無學員提交測驗</div>`;
+                return;
+            }
+            let html = '';
+            allSubmissions.slice().reverse().forEach(sub => {
+                let date = new Date(sub.timestamp);
+                let timeStr = `${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${date.getMinutes().toString().padStart(2,'0')}`;
+                html += `<div class="submission-item">
+                            <span><strong>${escapeHtml(sub.studentId)}</strong> 總分:${sub.totalScore} | 誠信:${sub.integrityScore} 精確:${sub.precisionScore} 責任:${sub.responsibilityScore} 分析:${sub.analyticalScore} 情緒:${sub.emotionalScore}</span>
+                            <span style="font-size:0.6rem;">${timeStr}</span>
+                         </div>`;
+            });
+            listContainer.innerHTML = html;
+        }
+    }
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    function renderQuestions() {
+        const container = document.getElementById("questionsContainer");
+        if(!container) return;
+        let html = '';
+        QUESTIONS.forEach((q, idx) => {
+            html += `
+                <div class="question-item">
+                    <div class="q-text"><span class="q-num">${idx+1}</span><span>${escapeHtml(q.text)}</span></div>
+                    <div class="scale" id="scale-${idx}">
+                        ${[1,2,3,4,5].map(score => `
+                            <label class="scale-option">
+                                <input type="radio" name="q${idx}" value="${score}">
+                                <span>${score}</span>
+                            </label>
+                        `).join('')}
+                        <span style="font-size:0.65rem; color:#6d8f5c;">非常不符→非常符合</span>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function getCurrentAnswers() {
+        let answers = new Array(20).fill(null);
+        for(let i=0;i<20;i++) {
+            let radios = document.querySelectorAll(`input[name="q${i}"]`);
+            let selected = null;
+            for(let r of radios) if(r.checked) { selected = parseInt(r.value,10); break; }
+            answers[i] = selected;
+        }
+        return answers;
+    }
+
+    function computeScores(answers) {
+        let integritySum = 0, precisionSum = 0, responsibilitySum = 0, analyticalSum = 0, emotionalSum = 0;
+        for(let idx of INTEGRITY_IDX) integritySum += (answers[idx] || 0);
+        for(let idx of PRECISION_IDX) precisionSum += (answers[idx] || 0);
+        for(let idx of RESPONSIBILITY_IDX) responsibilitySum += (answers[idx] || 0);
+        for(let idx of ANALYTICAL_IDX) analyticalSum += (answers[idx] || 0);
+        for(let idx of EMOTIONAL_IDX) emotionalSum += (answers[idx] || 0);
+        let total = integritySum + precisionSum + responsibilitySum + analyticalSum + emotionalSum;
+        return { integrityScore: integritySum, precisionScore: precisionSum, responsibilityScore: responsibilitySum, analyticalScore: analyticalSum, emotionalScore: emotionalSum, totalScore: total };
+    }
+
+    function showFlowerAnalysis(studentId, scores) {
+        const modal = document.getElementById("resultModal");
+        const contentDiv = document.getElementById("modalScoreContent");
+        // 提供針對會計師的分析建議
+        let suggestion = "";
+        if(scores.totalScore >= 85) suggestion = "🏆 卓越會計師潛能！具備高度誠信、精確與抗壓性，非常適合執業會計師或審計主管。";
+        else if(scores.totalScore >= 75) suggestion = "📊 良好會計特質，細心且負責，可朝記帳士、財務會計發展。";
+        else if(scores.totalScore >= 65) suggestion = "🌱 具備基礎，可加強數字敏感度與職業道德訓練。";
+        else suggestion = "📘 建議探索其他職能，或加強會計專業知識與責任感。";
+        contentDiv.innerHTML = `
+            <p><strong>學號：${escapeHtml(studentId)}</strong></p>
+            <div class="score-detail">
+                <p>📈 總分：${scores.totalScore} / 100</p>
+                <p>⚖️ 誠信正直：${scores.integrityScore}/25</p>
+                <p>🔍 細心精確：${scores.precisionScore}/25</p>
+                <p>⛑️ 責任堅持：${scores.responsibilityScore}/15</p>
+                <p>🧠 分析邏輯：${scores.analyticalScore}/20</p>
+                <p>💪 情緒穩定：${scores.emotionalScore}/15</p>
+                <p>💡 評語：${suggestion}</p>
+            </div>
+        `;
+        const flowerIconDiv = document.querySelector("#resultModal .flower-icon");
+        if(flowerIconDiv) flowerIconDiv.innerHTML = `<i class="fas fa-seedling"></i> <i class="fas fa-calculator"></i> 📚🌸`;
+        modal.classList.add("active");
+    }
+
+    function submitAssessment() {
+        const studentId = document.getElementById("studentId").value.trim();
+        if(studentId === "") {
+            alert("請輸入學號（例如 ACC2024001）才能進行測驗。");
+            return;
+        }
+        const answers = getCurrentAnswers();
+        const missing = [];
+        for(let i=0;i<answers.length;i++) if(answers[i]===null) missing.push(i+1);
+        if(missing.length > 0) {
+            alert(`尚有第 ${missing.join(", ")} 題未作答，請完成所有題目後再提交。`);
+            return;
+        }
+        const scores = computeScores(answers);
+        const submissionRecord = {
+            studentId: studentId,
+            timestamp: Date.now(),
+            answers: [...answers],
+            integrityScore: scores.integrityScore,
+            precisionScore: scores.precisionScore,
+            responsibilityScore: scores.responsibilityScore,
+            analyticalScore: scores.analyticalScore,
+            emotionalScore: scores.emotionalScore,
+            totalScore: scores.totalScore
+        };
+        allSubmissions.push(submissionRecord);
+        saveSubmissions();
+        showFlowerAnalysis(studentId, scores);
+    }
+
+    let teacherUnlocked = false;
+    function showTeacherPanel() {
+        if(teacherUnlocked) {
+            document.getElementById("teacherPanel").classList.add("visible-panel");
+            return;
+        }
+        let pwd = prompt("🔐 教師專區需要密碼才能檢視答案收集系統。\n請輸入管理密碼：");
+        if(pwd === "2002") {
+            teacherUnlocked = true;
+            document.getElementById("teacherPanel").classList.add("visible-panel");
+            alert("教師專區已解鎖，可匯出資料與查看學員提交記錄。");
+            updateTeacherUI();
+        } else if(pwd !== null) {
+            alert("密碼錯誤，無法進入教師專區。");
+        }
+    }
+
+    function exportCSV() {
+        if(allSubmissions.length === 0) {
+            alert("目前無任何提交紀錄。");
+            return;
+        }
+        let headers = ["學號","時間戳","總分","誠信正直(25)","細心精確(25)","責任堅持(15)","分析邏輯(20)","情緒穩定(15)"];
+        for(let i=1;i<=20;i++) headers.push(`Q${i}_得分`);
+        let rows = [headers];
+        for(let sub of allSubmissions) {
+            let row = [
+                sub.studentId,
+                new Date(sub.timestamp).toLocaleString(),
+                sub.totalScore,
+                sub.integrityScore,
+                sub.precisionScore,
+                sub.responsibilityScore,
+                sub.analyticalScore,
+                sub.emotionalScore
+            ];
+            for(let i=0;i<20;i++) row.push(sub.answers[i]);
+            rows.push(row);
+        }
+        let csvContent = rows.map(row => row.map(cell => {
+            if(typeof cell === 'string' && (cell.includes(',') || cell.includes('"'))) return `"${cell.replace(/"/g, '""')}"`;
+            return cell;
+        }).join(",")).join("\n");
+        let blob = new Blob(["\uFEFF" + csvContent], {type: "text/csv;charset=utf-8;"});
+        let link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "accountant_potential_data.csv";
+        link.click();
+        URL.revokeObjectURL(blob);
+        alert("CSV已匯出，內含所有學員詳細答案。");
+    }
+
+    function clearAllRecords() {
+        if(confirm("⚠️ 警告：將清除所有學員測驗記錄，不可復原。確定嗎？")) {
+            allSubmissions = [];
+            saveSubmissions();
+            alert("已清空所有提交資料。");
+        }
+    }
+
+    function closeModal() {
+        document.getElementById("resultModal").classList.remove("active");
+    }
+
+    function bindEvents() {
+        document.getElementById("submitBtn").addEventListener("click", submitAssessment);
+        document.getElementById("teacherPortalBtn").addEventListener("click", showTeacherPanel);
+        document.getElementById("exportCsvBtn").addEventListener("click", exportCSV);
+        document.getElementById("clearAllDataBtn").addEventListener("click", clearAllRecords);
+        document.getElementById("closeModalBtn").addEventListener("click", closeModal);
+        const modalOverlay = document.getElementById("resultModal");
+        modalOverlay.addEventListener("click", function(e) {
+            if(e.target === modalOverlay) closeModal();
+        });
+    }
+
+    function init() {
+        renderQuestions();
+        loadSubmissions();
+        bindEvents();
+        document.getElementById("teacherPanel").classList.remove("visible-panel");
+        teacherUnlocked = false;
+    }
+    init();
+</script>
+</body>
+</html>
